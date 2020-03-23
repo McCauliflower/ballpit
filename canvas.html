@@ -61,11 +61,11 @@
 
             let circlesArray = [];
             for(let i=0; i < 100; i++){
-                const x = Math.random() * window.innerWidth
-                const y = Math.random() * window.innerHeight
+                const radius = 30;
+                const x = Math.random() * (window.innerWidth - radius * 2) + radius
+                const y = Math.random() * (window.innerHeight - radius * 2) + radius
                 const dx = 4;
                 const dy = 4;
-                const radius = 30;
                 circlesArray.push(new Circle(x, y, dx, dy, radius))
             }
 

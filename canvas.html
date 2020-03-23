@@ -26,9 +26,16 @@
         <canvas id="canvas" width="150" height="150"></canvas>
         <script type="text/babel" data-presets="env,stage-3">
             let canvas = document.querySelector('#canvas');
+            let c = canvas.getContext('2d');
+            let mouse = { x: undefined, y: undefined }
+            let circlesArray = [];
+
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            let c = canvas.getContext('2d');
+            window.addEventListener('mousemove', (event) => {
+                mouse.x = event.x
+                mouse.y = event.y
+            })
 
             class Circle {
                 constructor(x, y, dx, dy, radius){
@@ -55,19 +62,27 @@
                     }
                     this.x += this.dx;
                     this.y += this.dy;
+
+                    if(mouse.x - this.x < 10){
+                        this.radius += 1
+                    }
+                    if(mouse.y - this.y < 10){
+                        this.radius += 1
+                    }
                     this.create();
                 }
             } 
-
-            let circlesArray = [];
             for(let i=0; i < 100; i++){
-                const radius = 30;
-                const x = Math.random() * (window.innerWidth - radius * 2) + radius
-                const y = Math.random() * (window.innerHeight - radius * 2) + radius
+                const radius = 10;
+                // const x = Math.random() * (window.innerWidth - radius * 2) + radius
+                // const y = Math.random() * (window.innerHeight - radius * 2) + radius
+                const x = Math.random() * (window.innerWidth - radius)
+                const y = Math.random() * (window.innerHeight - radius)
                 const dx = 4;
                 const dy = 4;
                 circlesArray.push(new Circle(x, y, dx, dy, radius))
             }
+
 
             function animate(){
                 requestAnimationFrame(animate);

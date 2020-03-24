@@ -41,6 +41,11 @@
                 mouse.x = event.x
                 mouse.y = event.y
             })
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                init()
+            })
 
             class Circle {
                 constructor(x, y, dx, dy, radius){
@@ -49,10 +54,10 @@
                     this.dx = dx;
                     this.dy = dy;
                     this.radius = radius;
+                    this.minRadius = radius
                     this.color = colorsArray[Math.floor(Math.random() * colorsArray.length)]
                 }
                 maxRadius = 40
-                minRadius = 10
 
                 create() {
                     c.beginPath();
@@ -83,13 +88,17 @@
                     this.create();
                 }
             } 
-            for(let i=0; i < 300; i++){
-                const radius = (Math.random() * 10) + 1
-                const x = Math.random() * (window.innerWidth - radius * 2) + radius
-                const y = Math.random() * (window.innerHeight - radius * 2) + radius
-                const dx = (Math.random() - 0.5) * 3
-                const dy = (Math.random() - 0.5) * 3
-                circlesArray.push(new Circle(x, y, dx, dy, radius))
+
+            function init(){
+                circlesArray = []
+                for(let i=0; i < 300; i++){
+                    const radius = (Math.random() * 10) + 1
+                    const x = Math.random() * (window.innerWidth - radius * 2) + radius
+                    const y = Math.random() * (window.innerHeight - radius * 2) + radius
+                    const dx = (Math.random() - 0.5) * 3
+                    const dy = (Math.random() - 0.5) * 3
+                    circlesArray.push(new Circle(x, y, dx, dy, radius))
+                 }
             }
 
 
@@ -98,7 +107,9 @@
                 c.clearRect(0, 0, innerWidth, innerHeight);
                 circlesArray.forEach( circle => circle.move())
             }
+            init();
             animate();
+            
             
         </script>
     </body>

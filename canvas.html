@@ -16,6 +16,8 @@
             body{ margin: 0}
             #canvas{
                 border: 1px solid black;
+                cursor: pointer;
+                background: lightgrey;
             }
         </style>
     </head>
@@ -29,6 +31,9 @@
             let c = canvas.getContext('2d');
             let mouse = { x: undefined, y: undefined }
             let circlesArray = [];
+            let colorsArray = [
+                '#040f0f', '#248232', '#2ba84a', '#2d3a3a', '#fcfffc'
+            ]
 
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -44,42 +49,46 @@
                     this.dx = dx;
                     this.dy = dy;
                     this.radius = radius;
+                    this.color = colorsArray[Math.floor(Math.random() * colorsArray.length)]
                 }
+                maxRadius = 40
+                minRadius = 10
+
                 create() {
                     c.beginPath();
                     c.arc( this.x, this.y, this.radius, 0, Math.PI * 2, true);
                     c.strokeStyle = "purple"
-                    c.fillStyle = "yellow"
+                    c.fillStyle = this.color
                     c.stroke();
                     c.fill();
                 }
                 move() {
-                    if((this.x + this.radius) > window.innerWidth || (this.x - this.radius) < 0){
+                    if(this.x + this.radius > window.innerWidth || this.x - this.radius < 0){
                         this.dx = -this.dx;
                     }
-                    if((this.y + this.radius) > window.innerHeight || (this.y - this.radius) < 0){
+                    if(this.y + this.radius > window.innerHeight || this.y - this.radius < 0){
                         this.dy = -this.dy;
                     }
                     this.x += this.dx;
                     this.y += this.dy;
 
-                    if(mouse.x - this.x < 10){
-                        this.radius += 1
-                    }
-                    if(mouse.y - this.y < 10){
-                        this.radius += 1
+                    // interactivity 
+                    if(mouse.x - this.x < 70 && mouse.x - this.x > 0 && mouse.y - this.y < 70 && mouse.y - this.y > 0){
+                        if(this.radius < this.maxRadius){
+                            this.radius += 1
+                        }
+                    }else if( this.radius > this.minRadius){
+                        this.radius--
                     }
                     this.create();
                 }
             } 
-            for(let i=0; i < 100; i++){
+            for(let i=0; i < 300; i++){
                 const radius = 10;
-                // const x = Math.random() * (window.innerWidth - radius * 2) + radius
-                // const y = Math.random() * (window.innerHeight - radius * 2) + radius
-                const x = Math.random() * (window.innerWidth - radius)
-                const y = Math.random() * (window.innerHeight - radius)
-                const dx = 4;
-                const dy = 4;
+                const x = Math.random() * (window.innerWidth - radius * 2) + radius
+                const y = Math.random() * (window.innerHeight - radius * 2) + radius
+                const dx = (Math.random() - 0.5) * 3
+                const dy = (Math.random() - 0.5) * 3
                 circlesArray.push(new Circle(x, y, dx, dy, radius))
             }
 
